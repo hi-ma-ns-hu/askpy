@@ -1,0 +1,27 @@
+# Render blueprint — deploy with: New → Blueprint → connect this repo.
+# Secret values (sync: false) are entered in the Render dashboard, never committed.
+services:
+  - type: web
+    name: analytics_vidhya
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: APP_ENV
+        value: PRODUCTION
+      - key: PYTHON_VERSION
+        value: "3.12.7"
+      - key: QDRANT_COLLECTION
+        value: vidhya_qa
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: COHERE_API_KEY
+        sync: false
+      - key: KAGGLE_API_TOKEN
+        sync: false

@@ -1,0 +1,14 @@
+.env
+*.pyc
+venv/
+__pycache__/
+.pytest_cache/
+
+# data + vector index artifacts
+data/
+index/
+*.csv
+.cohere_cache/
+
+# generated deck intermediate (keep slides.md source + slides.pdf)
+deck/slides.html
