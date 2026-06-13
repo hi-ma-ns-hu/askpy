@@ -44,8 +44,8 @@ class Settings(BaseSettings):
 
   # ── VECTOR STORE (Qdrant) ───────────────────────────────────────────────────
   # Optional at boot so /health works before ingestion is configured.
-  QDRANT_URL: str;
-  QDRANT_API_KEY: str;
+  QDRANT_URL: str = ''
+  QDRANT_API_KEY: str = ''
   QDRANT_COLLECTION: str = "vidhya_qa"
 
   # ── RERANKER (Cohere) ───────────────────────────────────────────────────────
@@ -54,7 +54,7 @@ class Settings(BaseSettings):
 
   # ── DATASET (Kaggle) ────────────────────────────────────────────────────────
   # Used only by scripts/ingest.py to authenticate the dataset download.
-  KAGGLE_API_TOKEN: str
+  KAGGLE_API_TOKEN: str = ''
 
   # ── RETRIEVAL PIPELINE ──────────────────────────────────────────────────────
   RETRIEVE_CANDIDATES: int = 50              # hybrid search → candidates for rerank
