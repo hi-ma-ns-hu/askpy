@@ -1,4 +1,4 @@
-.PHONY: install dev test ingest
+.PHONY: install dev test ingest eval
 
 # install dependencies
 install:
@@ -15,3 +15,18 @@ test:
 # build the vector index from the Stack Overflow dataset
 ingest:
 	python -m scripts.ingest
+
+# run the LLM-as-judge eval harness and write evals/RESULTS.md
+eval:
+	python -m evals.run_evals --no-cache
+	python -m evals.check_regression
+
+eval-fast:
+	python -m evals.run_evals --skip-judge
+
+eval-fresh:
+	python -m evals.run_evals --no-cache
+
+# promote current results to baseline after manual review
+eval-promote:
+	python -m evals.check_regression --promote

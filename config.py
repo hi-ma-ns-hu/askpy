@@ -39,14 +39,21 @@ class Settings(BaseSettings):
   # ── LLM (OpenAI) ────────────────────────────────────────────────────────────
   OPENAI_API_KEY: str
   LLM_MODEL: str = "gpt-4o-mini"
-  EMBEDDING_MODEL: str = "text-embedding-3-small"
-  EMBEDDING_DIM: int = 768                   # Matryoshka truncation (1536 → 768)
+  EMBEDDING_MODEL: str = "text-embedding-3-small"   # OpenAI (production default)
+  EMBEDDING_DIM: int = 768                           # Matryoshka truncation (1536 → 768)
+
+  # ── LOCAL EMBEDDING (fine-tuned sentence-transformer) ────────────────────────
+  # Set to the model directory after running scripts/finetune_embeddings.py.
+  # When set, embed_text() uses the local model instead of the OpenAI API.
+  # Requires re-ingesting — the index must use the same embedding space.
+  # Example: LOCAL_EMBEDDING_MODEL=./models/vidhya-embeddings
+  LOCAL_EMBEDDING_MODEL: str = ""
 
   # ── VECTOR STORE (Qdrant) ───────────────────────────────────────────────────
   # Optional at boot so /health works before ingestion is configured.
   QDRANT_URL: str = ''
   QDRANT_API_KEY: str = ''
-  QDRANT_COLLECTION: str = "vidhya_qa"
+  QDRANT_COLLECTION: str = "vidhya_qa_v2"
 
   # ── RERANKER (Cohere) ───────────────────────────────────────────────────────
   COHERE_API_KEY: str = ''
@@ -61,10 +68,26 @@ class Settings(BaseSettings):
   RETRIEVE_TOP_K: int = 5                    # final chunks passed to the LLM
   RETRIEVAL_THRESHOLD: float = 0.2           # drop candidates below this similarity
 
+  # ── SEMANTIC CACHE ───────────────────────────────────────────────────────────
+  # Calibrate with scripts/threshold_sweep.py — pick the lowest threshold with
+  # zero false positives. 0.94 is a starting point, not a permanent value.
+  SEMANTIC_CACHE_THRESHOLD: float = 0.94
+
   # ── CONFIDENCE SCORING (see shared/llm/get_llm_answer.py) ───────────────────
   RETRIEVAL_CONFIDENCE_WEIGHT: float = 0.3
   LLM_CONFIDENCE_WEIGHT: float = 0.7
   ANSWER_CONFIDENCE_THRESHOLD: float = 0.4
+
+  # ── TRACING (Langfuse) ───────────────────────────────────────────────────────
+  # Optional — leave empty to disable tracing entirely. Get keys from
+  # https://cloud.langfuse.com → Settings → API Keys.
+  LANGFUSE_PUBLIC_KEY: str = ""
+  LANGFUSE_SECRET_KEY: str = ""
+
+  # ── NLP (query classification) ───────────────────────────────────────────────
+  # Requires torch + transformers (~1.6GB model download on first use).
+  # Off by default — set to true only when you want per-query type logging.
+  ENABLE_QUERY_CLASSIFICATION: bool = False
 
   # ── COMPUTED ────────────────────────────────────────────────────────────────
   @computed_field

@@ -33,6 +33,27 @@ Rules:
 - NEVER cite a chunk just because it is topically related — only cite if you used it
 - Cite only 1 chunk unless the answer spans multiple distinct topics
 - Never fabricate citations
+
+Example of a correct response (follow this format exactly):
+
+QUESTION: How do I remove duplicates from a list while preserving order?
+
+To remove duplicates while keeping the original order, use a seen set:
+
+```python
+seen = set()
+result = [x for x in original if not (x in seen or seen.add(x))]
+```
+
+If order does not matter, convert to a set and back:
+
+```python
+result = list(set(original))
+```
+
+CONFIDENCE: 0.90
+CITATIONS:
+[1]: Removing duplicates from a list in Python — describes both the set-conversion approach for unordered removal and the seen-set pattern for order-preserving deduplication.
 """
 
 def _parse_response(response_text: str, retrieval_confidence: float, chunks) -> tuple[str, float, str | None]:
@@ -58,7 +79,7 @@ def _parse_response(response_text: str, retrieval_confidence: float, chunks) -> 
           excerpt = trimmed_excerpt[:last_period+1] if last_period > 150 else trimmed_excerpt.rstrip() + '...'
         citations.append((chunks[chunk_index], excerpt))
 
-
+  # use deterministic scorer for confidence
   if 'CONFIDENCE:' in response_text:
     confidence_parts = response_text.rsplit('CONFIDENCE:', 1)
     response_text = confidence_parts[0].strip()
@@ -102,4 +123,5 @@ async def get_llm_answer(question: str, chunks: list[dict], history: list[dict]=
     temperature=0.1
   )
 
-  return _parse_response(response.choices[0].message.content, retrieval_confidence, chunks)
+  answer, confidence, citations = _parse_response(response.choices[0].message.content, retrieval_confidence, chunks)
+  return answer, confidence, citations, response.usage
