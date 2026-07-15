@@ -180,13 +180,6 @@ latency, and a quality observation.
 
 ## Deployment
 
-**Live on Railway:** https://analyticsvidhya-production.up.railway.app
-
-The service is a single **stateless** FastAPI app — it queries managed Qdrant Cloud and the
-OpenAI/Cohere APIs, so it deploys as one web service (a `Procfile` defines the start command).
-Redis is optional; the live instance runs cache-less. Env vars are set in the platform dashboard
-(see [`.env.example`](.env.example)).
-
-> Note: free-tier instances may cold-start (first request after idle takes a few seconds).
+Will be deployed soon.
 
 ---
