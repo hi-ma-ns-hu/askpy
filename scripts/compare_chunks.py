@@ -3,17 +3,17 @@ scripts/compare_chunks.py — compare retrieval quality across chunk sizes.
 
 Run AFTER ingesting the same corpus into three collections with different chunk sizes:
 
-  python -m scripts.ingest --chunk-size 500  --min-score 50 --max-docs 50000 --collection vidhya_500
-  python -m scripts.ingest --chunk-size 2000 --min-score 50 --max-docs 50000 --collection vidhya_2000
-  python -m scripts.ingest --chunk-size 4000 --min-score 50 --max-docs 50000 --collection vidhya_4000
+  python -m scripts.ingest --chunk-size 500  --min-score 50 --max-docs 50000 --collection AskPy_500
+  python -m scripts.ingest --chunk-size 2000 --min-score 50 --max-docs 50000 --collection AskPy_2000
+  python -m scripts.ingest --chunk-size 4000 --min-score 50 --max-docs 50000 --collection AskPy_4000
 
 Then run:
   python -m scripts.compare_chunks
 
 What to observe:
-  vidhya_500  — precise retrieval, thin context → faithfulness drops (LLM lacks detail)
-  vidhya_2000 — balanced: embedding is focused AND context is rich
-  vidhya_4000 — rich context, diluted embedding → source_fit drops (retrieval misses)
+  AskPy_500  — precise retrieval, thin context → faithfulness drops (LLM lacks detail)
+  AskPy_2000 — balanced: embedding is focused AND context is rich
+  AskPy_4000 — rich context, diluted embedding → source_fit drops (retrieval misses)
 """
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from evals.judge import judge_answer, JudgeResult
 from services.retriever import retrieve
 from shared import get_llm_answer
 
-COLLECTIONS = ["vidhya_500", "vidhya_2000", "vidhya_4000"]
+COLLECTIONS = ["AskPy_500", "AskPy_2000", "AskPy_4000"]
 
 QUERIES = [
     "How do I reverse a list in Python?",

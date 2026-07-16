@@ -68,7 +68,7 @@ class JSONFormatter(logging.Formatter):
     level       DEBUG / INFO / WARNING / ERROR / CRITICAL
     logger      module path e.g. "services.qa_engine.service"
     message     the log message
-    service     "Vidhya"
+    service     "AskPy"
     env         development / staging / production
 
   Added from bind_context() when present:
@@ -84,7 +84,7 @@ class JSONFormatter(logging.Formatter):
       "level":     record.levelname,
       "logger":    record.name,
       "message":   record.getMessage(),
-      "service":   "Vidhya",
+      "service":   "AskPy",
       "env":       settings.APP_ENV,
     }
 

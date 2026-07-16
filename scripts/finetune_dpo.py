@@ -57,7 +57,7 @@ def main() -> None:
     parser.add_argument("--model",      default="meta-llama/Llama-3.2-1B-Instruct",
                         help="Base or SFT model to fine-tune. Use a small model on CPU.")
     parser.add_argument("--data",       default="data/dpo_train.jsonl")
-    parser.add_argument("--output",     default="models/vidhya-dpo")
+    parser.add_argument("--output",     default="models/AskPy-dpo")
     parser.add_argument("--epochs",     type=int,   default=1)
     parser.add_argument("--batch-size", type=int,   default=2)
     parser.add_argument("--beta",       type=float, default=0.1,

@@ -46,14 +46,14 @@ class Settings(BaseSettings):
   # Set to the model directory after running scripts/finetune_embeddings.py.
   # When set, embed_text() uses the local model instead of the OpenAI API.
   # Requires re-ingesting — the index must use the same embedding space.
-  # Example: LOCAL_EMBEDDING_MODEL=./models/vidhya-embeddings
+  # Example: LOCAL_EMBEDDING_MODEL=./models/AskPy-embeddings
   LOCAL_EMBEDDING_MODEL: str = ""
 
   # ── VECTOR STORE (Qdrant) ───────────────────────────────────────────────────
   # Optional at boot so /health works before ingestion is configured.
   QDRANT_URL: str = ''
   QDRANT_API_KEY: str = ''
-  QDRANT_COLLECTION: str = "vidhya_qa_v2"
+  QDRANT_COLLECTION: str = "AskPy_qa_v2"
 
   # ── RERANKER (Cohere) ───────────────────────────────────────────────────────
   COHERE_API_KEY: str = ''

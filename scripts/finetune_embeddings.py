@@ -7,8 +7,8 @@ What happens here:
   2. Wrap the JSONL pairs as a TripletDataset
   3. Train with TripletLoss — pulls (query, positive) together,
      pushes (query, negative) apart in 384-dim embedding space
-  4. Save the model to ./models/vidhya-embeddings
-  5. Set LOCAL_EMBEDDING_MODEL=./models/vidhya-embeddings in .env to use it
+  4. Save the model to ./models/AskPy-embeddings
+  5. Set LOCAL_EMBEDDING_MODEL=./models/AskPy-embeddings in .env to use it
 
 Training takes ~5–15 min on CPU for 5k pairs. NDCG@10 is logged per epoch —
 watch it go up. If it plateaus after epoch 1, your negatives weren't hard enough.
@@ -27,7 +27,7 @@ from pathlib import Path
 
 
 BASE_MODEL = "all-MiniLM-L6-v2"    # 22M params, 384-dim, fast on CPU
-OUTPUT_DIR = "models/vidhya-embeddings"
+OUTPUT_DIR = "models/AskPy-embeddings"
 
 
 def _load_pairs(path: str) -> tuple[list[str], list[str], list[str]]:
@@ -85,7 +85,7 @@ def main() -> None:
         anchors=eval_queries,
         positives=eval_positives,
         negatives=eval_negatives,
-        name="vidhya-eval",
+        name="AskPy-eval",
     )
 
     warmup_steps = int(len(train_dataloader) * args.epochs * args.warmup)

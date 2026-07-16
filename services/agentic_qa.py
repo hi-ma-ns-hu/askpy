@@ -29,7 +29,7 @@ import json
 from openai import AsyncOpenAI
 from config import settings
 from services.retriever import retrieve
-from shared.llm.get_llm_answer import Vidhya_SYSTEM_PROMPT, _parse_response
+from shared.llm.get_llm_answer import AskPy_SYSTEM_PROMPT, _parse_response
 
 # ── Tool schema (OpenAI function-calling format) ────────────────────────────
 
@@ -76,7 +76,7 @@ async def agentic_ask(question: str, top_k: int = 5) -> dict:
     context = _format_context(initial_chunks)
 
     messages = [
-        {"role": "system", "content": Vidhya_SYSTEM_PROMPT},
+        {"role": "system", "content": AskPy_SYSTEM_PROMPT},
         {"role": "system", "content": f"Knowledge base context:\n{context}"},
         {"role": "user",   "content": question},
     ]

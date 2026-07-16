@@ -37,7 +37,7 @@ signal.signal(signal.SIGTERM, _handle_sigterm)
 # lifespan
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-  logger.info("Vidhya starting", env=settings.APP_ENV)
+  logger.info("AskPy starting", env=settings.APP_ENV)
 
   # from services import SlackAdapter, set_slack
   # set_slack(await SlackAdapter().initialize())
@@ -47,7 +47,7 @@ async def lifespan(app: FastAPI):
   from shared import redis
   if redis is not None:
     await redis.aclose()
-  logger.info("Vidhya shutdown complete")
+  logger.info("AskPy shutdown complete")
 
 
 def _add_health_routes(app: FastAPI) -> None:
@@ -113,7 +113,7 @@ def _add_trace_middleware(app: FastAPI) -> None:
 
 # app factory
 def create_app() -> FastAPI:
-  app = FastAPI(title="Vidhya", version="0.1.0", lifespan=lifespan, root_path='/api', docs_url="/docs" if settings.IS_DEVELOPMENT else None, redoc_url=None)
+  app = FastAPI(title="AskPy", version="0.1.0", lifespan=lifespan, root_path='/api', docs_url="/docs" if settings.IS_DEVELOPMENT else None, redoc_url=None)
   _add_trace_middleware(app)
   _add_health_routes(app)
   _add_api_routes(app)

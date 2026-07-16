@@ -50,7 +50,7 @@ from services.retriever import retrieve
 from services.tag_extractor import extract_tags
 from shared import get_logger
 from shared.tracing import new_trace
-from shared.llm.get_llm_answer import Vidhya_SYSTEM_PROMPT, _parse_response
+from shared.llm.get_llm_answer import AskPy_SYSTEM_PROMPT, _parse_response
 
 logger = get_logger(__name__)
 
@@ -177,7 +177,7 @@ async def agent_ask(question: str, top_k: int = 5) -> dict:
     tag_hint = f"\nDetected libraries in question: {detected_tags}. Use search_by_tags with these when relevant." if detected_tags else ""
 
     messages = [
-        {"role": "system", "content": Vidhya_SYSTEM_PROMPT + tag_hint},
+        {"role": "system", "content": AskPy_SYSTEM_PROMPT + tag_hint},
         {"role": "system", "content": f"Initial context:\n{_format_context(initial_chunks)}"},
         {"role": "user", "content": question},
     ]

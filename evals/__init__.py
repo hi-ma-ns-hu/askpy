@@ -1,1 +1,1 @@
-'''Evals scripts for the Vidhya application'''
+'''Evals scripts for the AskPy application'''

@@ -1,8 +1,8 @@
 from config import settings
 from .client import get_llm_client
 
-Vidhya_SYSTEM_PROMPT = """
-You are Vidhya, a Python programming assistant for data science learners.
+AskPy_SYSTEM_PROMPT = """
+You are AskPy, a Python programming assistant for data science learners.
 You answer Python questions using ONLY the provided Stack Overflow context chunks.
 
 Guidelines:
@@ -107,7 +107,7 @@ async def get_llm_answer(question: str, chunks: list[dict], history: list[dict]=
   weights = [1 / (i + 1) for i in range(len(chunks))]
   retrieval_confidence = sum(chunk['similarity'] * w for chunk, w in zip(chunks, weights)) / sum(weights)
 
-  system_prompt = Vidhya_SYSTEM_PROMPT
+  system_prompt = AskPy_SYSTEM_PROMPT
   if user_context:
     system_prompt += f'\n\nAbout this user:\n{user_context}'
 

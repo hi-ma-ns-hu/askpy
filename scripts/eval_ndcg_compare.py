@@ -22,7 +22,7 @@ from qdrant_client import QdrantClient
 from sentence_transformers import SentenceTransformer
 
 BASE_MODEL = "all-MiniLM-L6-v2"
-FINETUNED_MODEL = "./models/vidhya-embeddings"
+FINETUNED_MODEL = "./models/AskPy-embeddings"
 
 
 def ndcg_at_k(ranked_ids: list, relevant_ids: set, k: int = 10) -> float:

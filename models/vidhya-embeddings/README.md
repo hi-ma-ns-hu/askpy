@@ -385,8 +385,8 @@ model-index:
       type: triplet
       name: Triplet
     dataset:
-      name: vidhya eval
-      type: vidhya-eval
+      name: AskPy eval
+      type: AskPy-eval
     metrics:
     - type: cosine_accuracy
       value: 0.8552188277244568
@@ -488,7 +488,7 @@ You can finetune this model on your own dataset.
 
 #### Triplet
 
-* Dataset: `vidhya-eval`
+* Dataset: `AskPy-eval`
 * Evaluated with [<code>TripletEvaluator</code>](https://sbert.net/docs/package_reference/sentence_transformer/evaluation.html#sentence_transformers.sentence_transformer.evaluation.TripletEvaluator)
 
 | Metric              | Value      |
@@ -663,7 +663,7 @@ You can finetune this model on your own dataset.
 </details>
 
 ### Training Logs
-| Epoch  | Step | Training Loss | vidhya-eval_cosine_accuracy |
+| Epoch  | Step | Training Loss | AskPy-eval_cosine_accuracy |
 |:------:|:----:|:-------------:|:---------------------------:|
 | 0.9980 | 500  | 0.2699        | -                           |
 | 1.0    | 501  | -             | 0.8552                      |

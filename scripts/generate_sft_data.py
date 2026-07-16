@@ -6,7 +6,7 @@ Output: data/sft_train.jsonl — one JSON line per training example in OpenAI
 chat format:
 
   {"messages": [
-    {"role": "system",  "content": "<Vidhya system prompt>"},
+    {"role": "system",  "content": "<AskPy system prompt>"},
     {"role": "user",    "content": "<question title + body>"},
     {"role": "assistant","content": "<cleaned top answer>"}
   ]}
@@ -62,7 +62,7 @@ MAX_ANSWER_CHARS   = 3000  # too long = rambling or covers multiple topics
 # ── system prompt (same as the live service) ────────────────────────────────
 
 _SYSTEM_PROMPT = (
-    "You are Vidhya, a Python programming assistant for data science learners. "
+    "You are AskPy, a Python programming assistant for data science learners. "
     "Answer the question clearly and practically. "
     "Prefer a short explanation followed by a minimal, correct code example when relevant. "
     "Use Markdown code blocks for any code. "

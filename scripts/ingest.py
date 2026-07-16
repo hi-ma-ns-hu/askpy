@@ -13,7 +13,7 @@ chunk_index, so chunks from the same thread share a recoverable parent ID.
 The thread title is prepended to every chunk to anchor the embedding.
 
 Run:
-  python -m scripts.ingest --min-score 10 --max-docs 20000 --collection vidhya_qa_v2
+  python -m scripts.ingest --min-score 10 --max-docs 20000 --collection AskPy_qa_v2
 
 Requires:
   OPENAI_API_KEY                              (.env)
