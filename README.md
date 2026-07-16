@@ -1,12 +1,7 @@
-# Vidhya — Python Programming Q&A Assistant
+# AskPy — Python Programming Q&A Assistant
 
 An AI-powered Q&A system that answers Python questions for data science learners with
 **grounded, cited answers** retrieved from a corpus of Stack Overflow Python Q&A.
-
-Built as a retrieval-augmented generation (RAG) pipeline behind a FastAPI service.
-
-> **Live demo:** https://analyticsvidhya-production.up.railway.app/api/health
-> (try `POST /api/ask` — see [API usage](#endpoints) below)
 
 ---
 
@@ -58,7 +53,7 @@ QUERY-TIME (online, POST /ask)
 ## Project structure
 
 ```
-vidhya/
+askpy/
 ├── app.py                  # FastAPI factory + /health
 ├── config.py               # typed settings (pydantic-settings)
 ├── routers/
@@ -89,7 +84,7 @@ vidhya/
 ### Setup
 ```bash
 git clone <your-repo-url>
-cd vidhya
+cd askpy
 
 python -m venv venv
 source venv/bin/activate
