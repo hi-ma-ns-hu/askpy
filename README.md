@@ -65,15 +65,9 @@ QUERY-TIME (online, POST /ask or /ask/agent)
 ## Project structure
 
 ```
-<<<<<<< HEAD
-AskPy/
-├── app.py                     # FastAPI factory + /health, /health/ready, trace middleware
-├── config.py                  # typed settings (pydantic-settings)
-=======
 askpy/
 ├── app.py                  # FastAPI factory + /health
 ├── config.py               # typed settings (pydantic-settings)
->>>>>>> 9c44c368a8d0a812ad39d47b634eaf1b801ffbf9
 ├── routers/
 │   ├── router.py               # mounts the API routes
 │   └── qa.py                   # POST /ask, POST /ask/agent, GET /cache/stats
@@ -123,11 +117,7 @@ askpy/
 ### Setup
 ```bash
 git clone <your-repo-url>
-<<<<<<< HEAD
-cd AskPy
-=======
 cd askpy
->>>>>>> 9c44c368a8d0a812ad39d47b634eaf1b801ffbf9
 
 python -m venv venv
 source venv/bin/activate
