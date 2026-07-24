@@ -1,0 +1,19 @@
+# Optional heavy ML dependencies — NOT needed to run the API in its default
+# configuration (ENABLE_QUERY_CLASSIFICATION=false, LOCAL_EMBEDDING_MODEL unset).
+#
+# Install only for local work on:
+#   - scripts/finetune_embeddings.py, scripts/finetune_dpo.py (fine-tuning)
+#   - scripts/generate_finetune_data.py / generate_sft_data.py / generate_dpo_data.py
+#   - services/query_classifier.py with ENABLE_QUERY_CLASSIFICATION=true
+#   - shared/llm/embedding.py with LOCAL_EMBEDDING_MODEL set
+#   - scripts/ingest.py (Kaggle dataset download)
+#
+# Kept out of requirements.txt because torch alone is multi-GB — installing it
+# on every deploy blows past most PaaS build time/size limits for zero benefit
+# in the default runtime path.
+accelerate>=0.26.0
+kagglehub==1.0.2
+kagglesdk==0.1.30
+sentence-transformers
+torch==2.12.1
+transformers==4.52.4

@@ -111,8 +111,9 @@ askpy/
 
 ### Prerequisites
 - Python 3.12+
-- Accounts/keys: **OpenAI**, **Qdrant Cloud** (free tier), **Kaggle** (API token)
-- Optional: **Redis** (answer cache) and **Cohere** (reranker) — both degrade gracefully if absent
+- Accounts/keys: **OpenAI**, **Qdrant Cloud** (free tier)
+- Optional: **Redis** (answer cache), **Cohere** (reranker), **Kaggle** (API token, only for
+  ingestion) — all degrade gracefully / aren't needed unless you use that feature
 
 ### Setup
 ```bash
@@ -121,10 +122,18 @@ cd askpy
 
 python -m venv venv
 source venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt        # runtime deps — everything the deployed API needs
 
 cp .env.example .env        # then fill in your keys
 ```
+
+`requirements.txt` is deliberately lean — it's what actually runs in production. Two more files
+cover everything else, install them only if you need that workflow:
+- `requirements-dev.txt` — pytest and friends, for running the test suite locally.
+- `requirements-ml.txt` — torch/transformers/sentence-transformers/kagglehub. Only needed for
+  `scripts/ingest.py`, the fine-tuning scripts, or running with `ENABLE_QUERY_CLASSIFICATION=true`
+  / `LOCAL_EMBEDDING_MODEL` set. These are multi-GB and left out of the default install on purpose
+  so deploys stay fast and small.
 
 ### Environment variables
 See [`.env.example`](.env.example) / [`config.py`](config.py). Required: `OPENAI_API_KEY`.
@@ -144,6 +153,11 @@ configured) but required for retrieval to work. Everything else degrades gracefu
 ---
 
 ## Data ingestion
+
+Requires the ML extras (`kagglehub`):
+```bash
+pip install -r requirements-ml.txt
+```
 
 Build the vector index from the
 [Stack Overflow Python Q&A](https://www.kaggle.com/datasets/stackoverflow/pythonquestions) dataset:
