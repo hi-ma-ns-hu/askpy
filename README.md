@@ -3,6 +3,9 @@
 An AI-powered Q&A system that answers Python questions for data science learners with
 **grounded, cited answers** retrieved from a corpus of Stack Overflow Python Q&A.
 
+> **Live:** https://askpy.fastapicloud.dev
+> (try `POST /ask` — see [Endpoints](#endpoints) below)
+
 ---
 
 ## Features
@@ -177,19 +180,27 @@ their best answer, embeds them (dense + sparse), and upserts to Qdrant. Re-runs 
 uvicorn app:app --port 3000        # or: make dev
 ```
 
-- API base path: `/api`
-- Interactive docs: http://localhost:3000/docs
+- Interactive docs (dev only — disabled in production): http://localhost:3000/docs
+
+Live instance: **https://askpy.fastapicloud.dev** — endpoints are at the bare paths shown below
+(`/health`, `/ask`, `/ask/agent`, `/cache/stats`).
 
 ### Endpoints
 
-**`GET /api/health`** — liveness check.
+**`GET /health`** — liveness check.
+```bash
+curl -s https://askpy.fastapicloud.dev/health
+```
 
-**`GET /api/health/ready`** — readiness probe (checks Redis, returns 503 while draining on shutdown).
+**`GET /health/ready`** — readiness probe (checks Redis, returns 503 while draining on shutdown).
+```bash
+curl -s https://askpy.fastapicloud.dev/health/ready
+```
 
-**`POST /api/ask`** — answer a Python question.
+**`POST /ask`** — answer a Python question.
 
 ```bash
-curl -s -X POST http://localhost:3000/api/ask \
+curl -s -X POST https://askpy.fastapicloud.dev/ask \
   -H "Content-Type: application/json" \
   -d '{"question": "How do I reverse a list in Python?"}'
 ```
@@ -215,11 +226,11 @@ Request body: `question` (3–2000 chars, required), `top_k` (1–20, optional),
 (only retrieve answers from this year onward, optional), `thread_id` (carries multi-turn
 conversation history, optional).
 
-**`POST /api/ask/agent`** — same question, answered by a multi-tool ReAct agent that can
+**`POST /ask/agent`** — same question, answered by a multi-tool ReAct agent that can
 choose between `search_general`, `search_by_tags`, and `search_recent` across up to 4 steps.
 
 ```bash
-curl -s -X POST http://localhost:3000/api/ask/agent \
+curl -s -X POST https://askpy.fastapicloud.dev/ask/agent \
   -H "Content-Type: application/json" \
   -d '{"question": "whats the modern way to open a file in python?"}'
 ```
@@ -227,7 +238,10 @@ curl -s -X POST http://localhost:3000/api/ask/agent \
 Response adds `steps` (the tools called, with args and chunk counts) and `total_chunks` in
 place of `sources`/`cached`.
 
-**`GET /api/cache/stats`** — live semantic-cache hit/miss counters since last restart.
+**`GET /cache/stats`** — live semantic-cache hit/miss counters since last restart.
+```bash
+curl -s https://askpy.fastapicloud.dev/cache/stats
+```
 
 ---
 
@@ -264,11 +278,21 @@ expectations) used for offline evaluation independent of the live judge.
 
 ## Deployment
 
+**Live on FastAPI Cloud:** https://askpy.fastapicloud.dev
 
 The service is a single **stateless** FastAPI app — it queries managed Qdrant Cloud and the
-OpenAI/Cohere APIs, so it deploys as one web service (a `Procfile` defines the start command).
-Redis is optional; the live instance runs cache-less.
+OpenAI/Cohere APIs, so it deploys as one web service. `main.py` (`from app import app`) is the
+entrypoint FastAPI Cloud's CLI expects; `requirements.txt` is deliberately trimmed to runtime-only
+dependencies so builds stay fast (see [Setup](#setup) for the `requirements-dev.txt` /
+`requirements-ml.txt` split). Redis is optional; the live instance runs cache-less.
 
-Will be deployed live soon.
+Deploy / manage from the CLI:
+```bash
+pip install "fastapi-cli[standard]"
+fastapi deploy          # or: fastapi cloud deploy
+fastapi cloud env list  # inspect/set env vars (OPENAI_API_KEY, QDRANT_URL, QDRANT_API_KEY,
+                         # QDRANT_COLLECTION, COHERE_API_KEY, APP_ENV=PRODUCTION, ...)
+fastapi cloud logs      # stream or fetch production logs
+```
 
 ---
