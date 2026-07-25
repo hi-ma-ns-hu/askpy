@@ -146,7 +146,7 @@ async def _dispatch(tool_name: str, args: dict, top_k: int) -> list[dict]:
         logger.warning("agent called unknown tool", tool=tool_name)
         chunks = []
 
-    logger.info("agent tool call", tool=tool_name, args=args, chunks_returned=len(chunks))
+    logger.info("agent tool call", tool=tool_name, tool_args=args, chunks_returned=len(chunks))
     return chunks
 
 
