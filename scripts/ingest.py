@@ -198,6 +198,22 @@ def sparse_vector(text: str) -> models.SparseVector:
 
 # ── embedding + upsert ──────────────────────────────────────────────────────────
 
+_local_model = None   # lazy singleton — mirrors shared/llm/embedding.py
+
+
+def _get_local_model():
+  global _local_model
+  if _local_model is None:
+    from sentence_transformers import SentenceTransformer
+    _local_model = SentenceTransformer(settings.LOCAL_EMBEDDING_MODEL)
+  return _local_model
+
+
+def embed_dense_local(texts: list[str]) -> list[list[float]]:
+  model = _get_local_model()
+  return model.encode(texts, show_progress_bar=False).tolist()
+
+
 def embed_dense(client: OpenAI, texts: list[str]) -> list[list[float]]:
   out = []
   for start in range(0, len(texts), EMBED_BATCH):
@@ -217,17 +233,19 @@ def embed_dense(client: OpenAI, texts: list[str]) -> list[list[float]]:
 
 
 def ingest(docs: list[dict], collection: str) -> None:
-  oai = OpenAI(api_key=settings.OPENAI_API_KEY)
+  use_local = bool(settings.LOCAL_EMBEDDING_MODEL)
+  oai = None if use_local else OpenAI(api_key=settings.OPENAI_API_KEY)
+  dim = _get_local_model().get_sentence_embedding_dimension() if use_local else settings.EMBEDDING_DIM
   sparse_model = SparseTextEmbedding("Qdrant/bm25")
   qdrant = get_qdrant_client()
-  ensure_collection(qdrant, collection_name=collection)
+  ensure_collection(qdrant, dim=dim, collection_name=collection)
 
   total = len(docs)
   for start in range(0, total, UPSERT_BATCH):
     batch = docs[start:start + UPSERT_BATCH]
     texts = [d["text"] for d in batch]
 
-    dense = embed_dense(oai, texts)
+    dense = embed_dense_local(texts) if use_local else embed_dense(oai, texts)
     sparse = list(sparse_model.embed(texts))
     # sparse = [sparse_vector(t) for t in texts]  # lightweight CRC32 fallback (no fastembed)
 
