@@ -1,4 +1,4 @@
---extra-index-url https://download.pytorch.org/whl/cpu
+--find-links https://download.pytorch.org/whl/cpu/torch/
 torch==2.14.0+cpu
 sentence-transformers==6.0.1
 transformers==5.16.1
